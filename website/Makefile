@@ -4,7 +4,7 @@ deps:
 	rsync -av '../design/' 'static/design/' --exclude='#*'
 
 	cd root/ && \
-	find . -mindepth 2 -type f -name '*.md' | while IFS= read -r file; do \
+	find . -mindepth 1 -type f -name '*.md' | while IFS= read -r file; do \
 		BASE_NAME=$$(basename "$$file" .md); \
 		TEXT_TO_PREPEND="---\ntitle: \"$$BASE_NAME\"\n---\n"; \
 		sed -i '' '1s/^/$(TEXT_TO_PREPEND)/' "$$file"; \
