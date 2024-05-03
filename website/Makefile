@@ -7,8 +7,15 @@ deps:
 	find . -mindepth 2 -type f -name '*.md' | while IFS= read -r file; do \
 		BASE_NAME=$$(basename "$$file" .md); \
 		TEXT_TO_PREPEND="---\ntitle: \"$$BASE_NAME\"\n---\n"; \
-		sed -i '1s/^/$(TEXT_TO_PREPEND)/' "$$file"; \
+		sed -i '' '1s/^/$(TEXT_TO_PREPEND)/' "$$file"; \
 	done
+	find . -mindepth 1 -type d | while IFS= read -r dir; do \
+		if compgen -G "$dir/*.md" > /dev/null; then \
+			BASE_NAME=$(basename "$dir"); \
+			echo "---title:\n$BASE_NAME\n---" > "$dir/_index.md"; \
+		fi \
+	done
+
 	mv root/* content/
 
 serve: deps
