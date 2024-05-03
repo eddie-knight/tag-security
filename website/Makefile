@@ -12,7 +12,7 @@ deps:
 	for dir in root/* ; do \
 		if [ -d "$$dir" ]; then \
 			base_name=$${dir%/}; \
-			echo "---\ntitle: $$base_name\n---" > "$$dir/_index.md"; \
+			echo "---\ntitle: $$base_name\nmenu:\n  main:\n    weight: 20\n---" > "$$dir/_index.md"; \
 		fi; \
 	done
 	mv root/* content/
