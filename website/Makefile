@@ -9,9 +9,11 @@ deps:
 		TEXT_TO_PREPEND="---\ntitle: \"$$BASE_NAME\"\n---\n"; \
 		sed -i '' '1s/^/$(TEXT_TO_PREPEND)/' "$$file"; \
 	done
-	@for dir in content ; do \
-		base_name=$${dir%/}; \
-		echo "---\ntitle: $$base_name\n---" > "$$dir/$$base_name.md"; \
+	for dir in root/* ; do \
+		if [ -d "$$dir" ]; then \
+			base_name=$${dir%/}; \
+			echo "---\ntitle: $$base_name\n---" > "$$dir/_index.md"; \
+		fi; \
 	done
 	mv root/* content/
 
