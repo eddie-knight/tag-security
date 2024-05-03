@@ -10,10 +10,8 @@ deps:
 		sed -i '' '1s/^/$(TEXT_TO_PREPEND)/' "$$file"; \
 	done
 	find . -mindepth 1 -type d | while IFS= read -r dir; do \
-		if compgen -G "$dir/*.md" > /dev/null; then \
-			BASE_NAME=$(basename "$dir"); \
-			echo "---title:\n$BASE_NAME\n---" > "$dir/_index.md"; \
-		fi \
+		BASE_NAME=$(basename "$dir"); \
+		echo "---title:\n$BASE_NAME\n---" > "$dir/_index.md"; \
 	done
 
 	mv root/* content/
