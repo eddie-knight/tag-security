@@ -9,10 +9,10 @@ deps:
 		TEXT_TO_PREPEND="---\ntitle: \"$$BASE_NAME\"\n---\n"; \
 		sed -i '' '1s/^/$(TEXT_TO_PREPEND)/' "$$file"; \
 	done
-	find . -mindepth 1 -type d | while IFS= read -r dir; do \
-		if find "$dir" -maxdepth 1 -type f -name '*.md' -print | read; then \
-			BASE_NAME=$(basename "$dir"); \
-			echo "---\ntitle: $BASE_NAME\n---" > "$dir/_index.md"; \
+	@find . -mindepth 2 -type d | while IFS= read -r dir; do \
+		if find "$$dir" -maxdepth 1 -type f -name '*.md' -print | read _; then \
+			BASE_NAME=$$(basename "$$dir"); \
+			echo "---\ntitle: $$BASE_NAME\n---" > "$$dir/_index.md"; \
 		fi \
 	done
 
