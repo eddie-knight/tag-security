@@ -3,12 +3,13 @@ deps:
 	rsync -av ../ root/ --include='assessments' --include='governance' --include='governance/related-groups' --include='supply-chain-security' --include='*.md' --exclude='*'
 	rsync -av '../design/' 'static/design/' --exclude='#*'
 
-	cd root/ &&\
+	cd root/ && \
 	find . -mindepth 2 -type f -name '*.md' | while IFS= read -r file; do \
 		BASE_NAME=$$(basename "$$file" .md); \
 		TEXT_TO_PREPEND="---\ntitle: \"$$BASE_NAME\"\n---\n"; \
 		sed -i '' '1s/^/$(TEXT_TO_PREPEND)/' "$$file"; \
 	done
+	cd content && \
 	@find . -mindepth 2 -type d | while IFS= read -r dir; do \
 		if find "$$dir" -maxdepth 1 -type f -name '*.md' -print | read _; then \
 			BASE_NAME=$$(basename "$$dir"); \
