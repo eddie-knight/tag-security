@@ -4,12 +4,10 @@ deps:
 	rsync -av '../design/' 'static/design/' --exclude='#*'
 
 	cd root/ &&\
-	for file in ./*; do \
-		BASE_NAME=$${file##*/}; \
-		BASE_NAME=$${BASE_NAME%.*}; \
+	find . -mindepth 2 -type f -name '*.md' | while IFS= read -r file; do \
+		BASE_NAME=$$(basename "$$file" .md); \
 		TEXT_TO_PREPEND="---\ntitle: \"$$BASE_NAME\"\n---\n"; \
-		sed '1d' "$$file" > temp_file; \
-		echo "$$TEXT_TO_PREPEND" | cat - temp_file > temp_file_with_header && mv temp_file_with_header "$$file"; \
+		sed -i '1s/^/$(TEXT_TO_PREPEND)/' "$$file"; \
 	done
 	mv root/* content/
 
