@@ -7,7 +7,7 @@ deps:
 	find . -mindepth 1 -type f -name '*.md' | while IFS= read -r file; do \
 		BASE_NAME=$$(basename "$$file" .md); \
 		TEXT_TO_PREPEND="---\ntitle: \"$$BASE_NAME\"\n---\n"; \
-		sed -i '' '1s/^/$(TEXT_TO_PREPEND)/' "$$file"; \
+		sed -i '' "1s/^/$(TEXT_TO_PREPEND)/" "$$file"; \
 	done
 	for dir in root/* ; do \
 		if [ -d "$$dir" ]; then \
