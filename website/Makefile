@@ -1,7 +1,17 @@
 deps:
-	rsync -av ../ content/ --include='assessments' --include='governance' --include='governance/related-groups' --include='supply-chain-security' --include='*.md' --exclude='*'
-	rsync -av '../design/' 'static/design/' --exclude='#*'
 	git submodule update --init --recursive
+	rsync -av ../ root/ --include='assessments' --include='governance' --include='governance/related-groups' --include='supply-chain-security' --include='*.md' --exclude='*'
+	rsync -av '../design/' 'static/design/' --exclude='#*'
+
+	cd root/ &&\
+	for file in ./*; do \
+		BASE_NAME=$${file##*/}; \
+		BASE_NAME=$${BASE_NAME%.*}; \
+		TEXT_TO_PREPEND="---\ntitle: \"$$BASE_NAME\"\n---\n"; \
+		sed '1d' "$$file" > temp_file; \
+		echo "$$TEXT_TO_PREPEND" | cat - temp_file > temp_file_with_header && mv temp_file_with_header "$$file"; \
+	done
+	mv root/* content/
 
 serve: deps
 	hugo server \
